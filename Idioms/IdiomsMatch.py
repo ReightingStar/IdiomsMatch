@@ -49,6 +49,7 @@ class IdiomGame(QWidget):
         self.char_pool = []
         self.selected_chars = []
         self.idiom_dict = defaultdict(list)
+        self.completed_count = 0
 
         self.init_ui()
         self.load_idioms("idioms.csv")
@@ -60,9 +61,11 @@ class IdiomGame(QWidget):
 
         # 状态显示
         status_layout = QHBoxLayout()
+        self.lbl_completed = QLabel("当前得分：0分", self)
         self.lbl_round = QLabel("第1题", self)
         self.lbl_status = QLabel("当前尾字：无", self)
         self.lbl_selected = QLabel("已选汉字：", self)
+        status_layout.addWidget(self.lbl_completed)
         status_layout.addWidget(self.lbl_round)
         status_layout.addWidget(self.lbl_status)
         status_layout.addStretch()
@@ -167,7 +170,7 @@ class IdiomGame(QWidget):
 
     def validate_idiom(self, idiom):
         """五重验证机制"""
-        # 字符必须全部在字堆中[3](@ref)
+        # 字符必须全部在字堆中
         for char in idiom:
             if char not in self.char_pool:
                 return False, f"『{char}』不在当前字堆中"
@@ -203,6 +206,8 @@ class IdiomGame(QWidget):
             return
 
         # 更新游戏状态
+        self.completed_count += 1
+        self.lbl_completed.setText(f"已得分：{self.completed_count}分")
         self.used_idioms.add(user_input)
         self.current_end = user_input[-1]
         self.lbl_round.setText(f"第{len(self.used_idioms) + 1}题")
