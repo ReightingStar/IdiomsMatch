@@ -128,7 +128,7 @@ class IdiomGame(QWidget):
             next_idioms = self.idiom_dict.get(self.current_end, [])
             for idiom in next_idioms:
                 # 拆解成语字符加入候选池
-                candidates += list(idiom) * 2  # 每个字符重复2次
+                candidates += list(idiom) * 1  # 每个字符重复2次,确保有字，设置为2可提高字出现频率
 
             # 确保当前尾字至少3次出现
             candidates += [self.current_end] * max(3, 4 - candidates.count(self.current_end))
